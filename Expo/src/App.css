@@ -1,80 +1,73 @@
-/* App.css */
+.app {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
 
-/* Estilos para la pantalla de inicio */
 .start-screen {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  background-color: #f0f0f0; /* Color de fondo de la pantalla de inicio */
+  height: 100%;
 }
 
-.start-screen-title {
-  font-size: 2.5rem; /* Tamaño de fuente del título */
-  margin-bottom: 30px; /* Espacio debajo del título */
-  color: #333;
-}
-
-/* Estilo para el contenedor de botones con fondo distinto */
 .buttons-container {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centra los botones en el contenedor */
-  gap: 20px; /* Espacio entre botones */
-  background-color: #007bff; /* Fondo distinto para el contenedor de botones */
-  padding: 60px; /* Espaciado interno aumentado */
-  border-radius: 12px; /* Bordes redondeados */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra opcional para mayor efecto */
-  width: 80%; /* Ancho del contenedor de botones */
-  max-width: 500px; /* Ancho máximo del contenedor de botones */
+  gap: 10px;
 }
 
 .option-button {
-  padding: 20px 40px; /* Tamaño aumentado del botón */
-  background-color: #ffffff; /* Fondo blanco para los botones */
-  color: #007bff; /* Color del texto de los botones */
-  border: none;
-  border-radius: 8px;
-  font-size: 1.2rem; /* Tamaño de fuente del botón aumentado */
+  padding: 10px 20px;
+  font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
 }
 
-.option-button:hover {
-  background-color: #e0e0e0; /* Fondo gris claro cuando se pasa el ratón */
-  color: #0056b3; /* Color del texto cuando se pasa el ratón */
-}
-
-/* Estilos para las imágenes arrastrables */
 .images-container {
   position: relative;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  background-color: #ffffff; /* Color de fondo opcional para el área de arrastre */
+  width: 100%;
+  height: 100%;
+  background-color: #f0f0f0;
+}
+
+.image-wrapper {
+  position: absolute;
+  cursor: move;
 }
 
 .image-box {
-  cursor: move;
-  position: absolute; /* Permite a las imágenes posicionarse libremente */
-  width: 100px; /* Ajusta el tamaño según sea necesario */
-  height: 100px; /* Ajusta el tamaño según sea necesario */
+  width: 100px;
+  height: 100px;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.image-info {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: white;
-  border: 1px solid #ddd;
-  padding: 5px;
-  width: 100%;
-  text-align: center;
-  z-index: 10;
-  display: block; /* Siempre visible, pero ocultar con clase */
+.image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
-.image-info.hidden {
-  display: none; /* Oculta la información cuando tiene la clase hidden */
+@keyframes floating {
+  0% { transform: translateY(0px); }
+  50%  { transform: translateY(15px); }
+  100%   { transform: translateY(0px); }   
+}
+
+.floating {
+  animation-name: floating;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.floating-0 { animation-delay: 0s; }
+.floating-1 { animation-delay: -1s; }
+.floating-2 { animation-delay: -2s; }
+
+.image-wrapper:hover .image-box {
+  animation-play-state: paused;
 }
