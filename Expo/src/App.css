@@ -34,6 +34,7 @@
 .image-wrapper {
   position: absolute;
   cursor: move;
+  padding: 10px;
 }
 
 .image-box {
@@ -46,9 +47,10 @@
 }
 
 .image {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+  width: 250px; /* Cambia el ancho de la imagen */
+  height: auto; /* Mantiene la proporción de la imagen */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 @keyframes floating {
@@ -70,4 +72,32 @@
 
 .image-wrapper:hover .image-box {
   animation-play-state: paused;
+}
+
+.info-box {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 5px;
+  padding: 10px;
+  position: absolute;
+  top: 270px; /* Ajusta la posición de la caja de información si es necesario */
+  left: 0;
+  width: 250px; /* Alinea con el ancho de la imagen */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.back-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.back-button:hover {
+  background-color: #0056b3;
 }

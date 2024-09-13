@@ -2,33 +2,47 @@ import { useState, useEffect } from 'react';
 import Draggable from 'react-draggable';
 import './App.css';
 
-// Asegúrate de que las rutas de las imágenes sean correctas
-import imagen1 from './assets/logo-certisur.png';
-import imagen2 from './assets/logo-geotrust.png';
-import imagen3 from './assets/logo-header.png';
-
 const imageData = [
-  { id: 'img1', src: imagen1, info: 'Información sobre imagen 1' },
-  { id: 'img2', src: imagen2, info: 'Información sobre imagen 2' },
-  { id: 'img3', src: imagen3, info: 'Información sobre imagen 3' },
+  { id: 'img1', src: '/assets/Imagen/Intersec.jpeg', info: 'Información sobre imagen 1', category: 'Imagen' },
+  { id: 'img2', src: '/assets/Imagen/Programador.jpg', info: 'Información sobre imagen 2', category: 'Imagen' },
+  { id: 'img3', src: '/assets/Seguridad/Alarma.jpg', info: 'Información sobre imagen 3', category: 'Seguridad' },
+  { id: 'img4', src: '/assets/Seguridad/Unicon.jpg', info: 'Información sobre imagen 4', category: 'Seguridad' },
+  { id: 'img5', src: '/assets/Seguridad/X28.jpg', info: 'Información sobre imagen 5', category: 'Seguridad' },
+  { id: 'img6', src: '/assets/Telecomunicaciones/Camara.jpg', info: 'Información sobre imagen 6', category: 'Telecomunicaciones' },
+  { id: 'img7', src: '/assets/Telecomunicaciones/Camara2.jpg', info: 'Información sobre imagen 7', category: 'Telecomunicaciones' },
+  { id: 'img8', src: '/assets/Telecomunicaciones/Compu.jpg', info: 'Información sobre imagen 8', category: 'Telecomunicaciones' },
+  { id: 'img9', src: '/assets/Telecomunicaciones/Startlink.jpg', info: 'Información sobre imagen 9', category: 'Telecomunicaciones' },
+  { id: 'img10', src: '/assets/Telecomunicaciones/Trabajo.jpg', info: 'Información sobre imagen 10', category: 'Telecomunicaciones' },
 ];
 
 const App = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [images, setImages] = useState([]);
+  const [visibleInfo, setVisibleInfo] = useState(null);
 
   useEffect(() => {
     if (selectedOption) {
-      const positionedImages = imageData.map((image, index) => ({
-        ...image,
-        position: { x: 100 + index * 120, y: 100 },
-      }));
-      setImages(positionedImages);
+      const filteredImages = imageData
+        .filter((image) => image.category === selectedOption)
+        .map((image, index) => ({
+          ...image,
+          position: { x: 100 + index * 120, y: 100 },
+        }));
+      setImages(filteredImages);
     }
   }, [selectedOption]);
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
+  };
+
+  const handleDoubleClick = (id) => {
+    setVisibleInfo(visibleInfo === id ? null : id);
+  };
+
+  const handleBackClick = () => {
+    setSelectedOption(null);
+    setVisibleInfo(null); // Restablecer la información visible
   };
 
   return (
@@ -37,13 +51,14 @@ const App = () => {
         <div className="start-screen">
           <h1 className="start-screen-title">Pantalla de Inicio</h1>
           <div className="buttons-container">
-            <button onClick={() => handleOptionClick('opcion1')} className="option-button">Opción 1</button>
-            <button onClick={() => handleOptionClick('opcion2')} className="option-button">Opción 2</button>
-            <button onClick={() => handleOptionClick('opcion3')} className="option-button">Opción 3</button>
+            <button onClick={() => handleOptionClick('Telecomunicaciones')} className="option-button">Telecomunicaciones</button>
+            <button onClick={() => handleOptionClick('Imagen')} className="option-button">Imagen</button>
+            <button onClick={() => handleOptionClick('Seguridad')} className="option-button">Seguridad</button>
           </div>
         </div>
       ) : (
         <div className="images-container">
+          <button onClick={handleBackClick} className="back-button">Volver</button>
           {images.map((image, index) => (
             <Draggable
               key={image.id}
@@ -51,9 +66,17 @@ const App = () => {
               bounds="parent"
             >
               <div className="image-wrapper">
-                <div className={`image-box floating floating-${index % 3}`}>
+                <div 
+                  className={`image-box floating floating-${index % 3}`}
+                  onDoubleClick={() => handleDoubleClick(image.id)}
+                >
                   <img src={image.src} alt={image.info} className="image" />
                 </div>
+                {visibleInfo === image.id && (
+                  <div className="info-box">
+                    <p>{image.info}</p>
+                  </div>
+                )}
               </div>
             </Draggable>
           ))}
