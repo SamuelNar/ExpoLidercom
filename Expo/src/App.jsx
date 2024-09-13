@@ -1,24 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Draggable from 'react-draggable';
 import './App.css';
 
 const imageData = [
-  { id: 'img1', src: '/assets/Imagen/Intersec.jpeg', info: 'Información sobre imagen 1', category: 'Imagen' },
-  { id: 'img2', src: '/assets/Imagen/Programador.jpg', info: 'Información sobre imagen 2', category: 'Imagen' },
-  { id: 'img3', src: '/assets/Seguridad/Alarma.jpg', info: 'Información sobre imagen 3', category: 'Seguridad' },
-  { id: 'img4', src: '/assets/Seguridad/Unicon.jpg', info: 'Información sobre imagen 4', category: 'Seguridad' },
-  { id: 'img5', src: '/assets/Seguridad/X28.jpg', info: 'Información sobre imagen 5', category: 'Seguridad' },
-  { id: 'img6', src: '/assets/Telecomunicaciones/Camara.jpg', info: 'Información sobre imagen 6', category: 'Telecomunicaciones' },
-  { id: 'img7', src: '/assets/Telecomunicaciones/Camara2.jpg', info: 'Información sobre imagen 7', category: 'Telecomunicaciones' },
-  { id: 'img8', src: '/assets/Telecomunicaciones/Compu.jpg', info: 'Información sobre imagen 8', category: 'Telecomunicaciones' },
-  { id: 'img9', src: '/assets/Telecomunicaciones/Startlink.jpg', info: 'Información sobre imagen 9', category: 'Telecomunicaciones' },
-  { id: 'img10', src: '/assets/Telecomunicaciones/Trabajo.jpg', info: 'Información sobre imagen 10', category: 'Telecomunicaciones' },
+  { id: 'img1', src: '/ExpoLidercom/assets/Imagen/Intersec.jpeg', info: 'Información sobre imagen 1', category: 'Imagen' },
+  { id: 'img2', src: '/ExpoLidercom/assets/Imagen/Programador.jpg', info: 'Información sobre imagen 2', category: 'Imagen' },
+  { id: 'img3', src: '/ExpoLidercom/assets/Seguridad/Alarma.jpg', info: 'Información sobre imagen 3', category: 'Seguridad' },
+  { id: 'img4', src: '/ExpoLidercom/assets/Seguridad/Unicon.jpg', info: 'Información sobre imagen 4', category: 'Seguridad' },
+  { id: 'img5', src: '/ExpoLidercom/assets/Seguridad/X28.jpg', info: 'Información sobre imagen 5', category: 'Seguridad' },
+  { id: 'img6', src: '/ExpoLidercom/assets/Telecomunicaciones/Camara.jpg', info: 'Información sobre imagen 6', category: 'Telecomunicaciones' },
+  { id: 'img7', src: '/ExpoLidercom/assets/Telecomunicaciones/Camara2.jpg', info: 'Información sobre imagen 7', category: 'Telecomunicaciones' },
+  { id: 'img8', src: '/ExpoLidercom/assets/Telecomunicaciones/Compu.jpg', info: 'Información sobre imagen 8', category: 'Telecomunicaciones' },
+  { id: 'img9', src: '/ExpoLidercom/assets/Telecomunicaciones/Startlink.jpg', info: 'Información sobre imagen 9', category: 'Telecomunicaciones' },
+  { id: 'img10', src: '/ExpoLidercom/assets/Telecomunicaciones/Trabajo.jpg', info: 'Información sobre imagen 10', category: 'Telecomunicaciones' },
 ];
 
 const App = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [images, setImages] = useState([]);
   const [visibleInfo, setVisibleInfo] = useState(null);
+  const touchStartTime = useRef(0);
+  const touchMoved = useRef(false);
 
   useEffect(() => {
     if (selectedOption) {
@@ -40,9 +42,28 @@ const App = () => {
     setVisibleInfo(visibleInfo === id ? null : id);
   };
 
+  const handleTouchStart = (id) => {
+    touchStartTime.current = Date.now();
+    touchMoved.current = false;
+  };
+
+  const handleTouchMove = () => {
+    touchMoved.current = true;
+  };
+
+  const handleTouchEnd = (id) => {
+    const touchDuration = Date.now() - touchStartTime.current;
+    if (!touchMoved.current && touchDuration < 200) {
+      // Consideramos esto como un toque simple
+      setVisibleInfo((prevVisibleInfo) =>
+        prevVisibleInfo === id ? null : id
+      );
+    }
+  };
+
   const handleBackClick = () => {
     setSelectedOption(null);
-    setVisibleInfo(null); // Restablecer la información visible
+    setVisibleInfo(null);
   };
 
   return (
@@ -69,6 +90,9 @@ const App = () => {
                 <div 
                   className={`image-box floating floating-${index % 3}`}
                   onDoubleClick={() => handleDoubleClick(image.id)}
+                  onTouchStart={() => handleTouchStart(image.id)}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={() => handleTouchEnd(image.id)}
                 >
                   <img src={image.src} alt={image.info} className="image" />
                 </div>
