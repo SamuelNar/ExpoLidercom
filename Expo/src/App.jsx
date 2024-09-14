@@ -28,11 +28,22 @@ const App = () => {
         .filter((image) => image.category === selectedOption)
         .map((image, index) => ({
           ...image,
-          position: { x: 100 + index * 120, y: 100 },
+          position:getRandomPosition(index),
         }));
       setImages(filteredImages);
     }
   }, [selectedOption]);
+
+  const getRandomPosition = (index) => {
+    // Ajusta estos valores para controlar la dispersión
+    const maxX = window.innerWidth - 250; // Ancho de la ventana menos el ancho de la imagen
+    const maxY = window.innerHeight - 250; // Altura de la ventana menos algo de espacio
+  
+    const randomX = Math.floor(Math.random() * maxX); // Posición aleatoria en X
+    const randomY = Math.floor(Math.random() * maxY); // Posición aleatoria en Y
+  
+    return { x: randomX, y: randomY }; // Devuelve la posición dispersa
+  };
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
@@ -42,7 +53,7 @@ const App = () => {
     setVisibleInfo(visibleInfo === id ? null : id);
   };
 
-  const handleTouchStart = (id) => {
+  const handleTouchStart = () => {
     touchStartTime.current = Date.now();
     touchMoved.current = false;
   };
@@ -53,7 +64,7 @@ const App = () => {
 
   const handleTouchEnd = (id) => {
     const touchDuration = Date.now() - touchStartTime.current;
-    if (!touchMoved.current && touchDuration < 200) {
+    if (!touchMoved.current && touchDuration < 500) {
       // Consideramos esto como un toque simple
       setVisibleInfo((prevVisibleInfo) =>
         prevVisibleInfo === id ? null : id
@@ -90,7 +101,7 @@ const App = () => {
                 <div 
                   className={`image-box floating floating-${index % 3}`}
                   onDoubleClick={() => handleDoubleClick(image.id)}
-                  onTouchStart={() => handleTouchStart(image.id)}
+                  onTouchStart={handleTouchStart}
                   onTouchMove={handleTouchMove}
                   onTouchEnd={() => handleTouchEnd(image.id)}
                 >
