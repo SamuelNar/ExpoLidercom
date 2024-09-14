@@ -13,6 +13,7 @@ const imageData = [
   { id: 'img8', src: '/ExpoLidercom/assets/Telecomunicaciones/Compu.jpg', info: 'Información sobre imagen 8', category: 'Telecomunicaciones' },
   { id: 'img9', src: '/ExpoLidercom/assets/Telecomunicaciones/Startlink.jpg', info: 'Información sobre imagen 9', category: 'Telecomunicaciones' },
   { id: 'img10', src: '/ExpoLidercom/assets/Telecomunicaciones/Trabajo.jpg', info: 'Información sobre imagen 10', category: 'Telecomunicaciones' },
+  {id: 'img11', src: '/ExpoLidercom/assets/Imagen/Cat.gif', info: 'Información sobre imagen 11', category: 'Imagen' },
 ];
 
 const App = () => {
