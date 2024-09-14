@@ -79,6 +79,9 @@ const App = () => {
 
   return (
     <div className="app">
+      <div className="logo-container">
+        <img src="/ExpoLidercom/assets/LogoTextoAzul.png" alt="Logo" className="logo" />
+      </div>
       {!selectedOption ? (
         <div className="start-screen">
           <h1 className="start-screen-title">Pantalla de Inicio</h1>
