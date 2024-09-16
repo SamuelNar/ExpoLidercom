@@ -76,6 +76,8 @@ const App = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [images, setImages] = useState([]);
   const [flippedCards, setFlippedCards] = useState({});
+  const touchTimeout = useRef(null);
+  const lastTap = useRef(0);
   const touchStartTime = useRef(0);
   const touchMoved = useRef(false);
 
@@ -120,9 +122,22 @@ const App = () => {
     }));
   };
 
-  const handleTouchStart = () => {
-    touchStartTime.current = Date.now();
-    touchMoved.current = false;
+  const handleTouchStart = (id, e) => {
+    e.preventDefault(); // Previene el comportamiento por defecto
+    const now = Date.now();
+    const DOUBLE_TAP_DELAY = 300;
+    
+    if (now - lastTap.current < DOUBLE_TAP_DELAY) {
+      // Doble toque detectado
+      handleFlip(id);
+      clearTimeout(touchTimeout.current);
+    } else {
+      touchTimeout.current = setTimeout(() => {
+        // Toque simple (para arrastrar)
+      }, DOUBLE_TAP_DELAY);
+    }
+    
+    lastTap.current = now;
   };
 
   const handleTouchMove = () => {
@@ -180,25 +195,22 @@ const App = () => {
           <button onClick={handleBackClick} className="back-button">
             Volver
           </button>
-          {images.map((image, index) => (
+          {images.map((image) => (
             <Draggable
               key={image.id}
               defaultPosition={image.position}
               bounds="parent"
             >
-              <div className={`image-wrapper`}>
+              <div 
+                className={`image-wrapper`}
+                onDoubleClick={() => handleDoubleClick(image.id)}
+                onTouchStart={(e) => handleTouchStart(image.id, e)}          
+              >
                 <div
-                  className={`image-box ${
-                    flippedCards[image.id] ? "flipped" : ""
-                  }`}
-                  style={{ animationDelay: `${index * 0.4}s` }}
-                  onDoubleClick={() => handleDoubleClick(image.id)}
-                  onTouchStart={handleTouchStart}
-                  onTouchMove={handleTouchMove}
-                  onTouchEnd={() => handleTouchEnd(image.id)}
+                  className={`image-box ${flippedCards[image.id] ? "flipped" : ""}`}
                 >
                   <div className="image-content">
-                    <img src={image.src} alt={image.info} className="image" />
+                    <img src={image.src} alt={image.info} className="image animate__animated animate__backInUp" />
                     <div className="info-box">
                       <p>{image.info}</p>
                     </div>
