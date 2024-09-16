@@ -11,6 +11,7 @@
     "deploy": "vite build && gh-pages -d dist"
   },
   "dependencies": {
+    "animate.css": "^4.1.1",
     "expo": "file:",
     "react": "^18.3.1",
     "react-beautiful-dnd": "^13.1.1",

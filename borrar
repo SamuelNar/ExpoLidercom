@@ -1,0 +1,337 @@
+import { useState, useEffect, useRef } from 'react';
+import Draggable from 'react-draggable';
+import 'animate.css';
+import './App.css';
+
+const imageData = [
+  { id: 'img1', src: '/ExpoLidercom/assets/Imagen/Intersec.jpeg', info: 'Información sobre imagen 1', category: 'Imagen' },
+  { id: 'img2', src: '/ExpoLidercom/assets/Imagen/Programador.jpg', info: 'Información sobre imagen 2', category: 'Imagen' },
+  { id: 'img3', src: '/ExpoLidercom/assets/Seguridad/Alarma.jpg', info: 'Información sobre imagen 3', category: 'Seguridad' },
+  { id: 'img4', src: '/ExpoLidercom/assets/Seguridad/Unicon.jpg', info: 'Información sobre imagen 4', category: 'Seguridad' },
+  { id: 'img5', src: '/ExpoLidercom/assets/Seguridad/X28.jpg', info: 'Información sobre imagen 5', category: 'Seguridad' },
+  { id: 'img6', src: '/ExpoLidercom/assets/Telecomunicaciones/Camara.jpg', info: 'Información sobre imagen 6', category: 'Telecomunicaciones' },
+  { id: 'img7', src: '/ExpoLidercom/assets/Telecomunicaciones/Camara2.jpg', info: 'Información sobre imagen 7', category: 'Telecomunicaciones' },
+  { id: 'img8', src: '/ExpoLidercom/assets/Telecomunicaciones/Compu.jpg', info: 'Información sobre imagen 8', category: 'Telecomunicaciones' },
+  { id: 'img9', src: '/ExpoLidercom/assets/Telecomunicaciones/Startlink.jpg', info: 'Información sobre imagen 9', category: 'Telecomunicaciones' },
+  { id: 'img10', src: '/ExpoLidercom/assets/Telecomunicaciones/Trabajo.jpg', info: 'Información sobre imagen 10', category: 'Telecomunicaciones' },
+  {id: 'img11', src: '/ExpoLidercom/assets/Imagen/Cat.gif', info: 'Información sobre imagen 11', category: 'Imagen' },
+];
+
+const App = () => {
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [images, setImages] = useState([]);
+  const [visibleInfo, setVisibleInfo] = useState(null);
+  const touchStartTime = useRef(0);
+  const touchMoved = useRef(false);
+
+  useEffect(() => {
+    if (selectedOption) {
+      const filteredImages = imageData
+        .filter((image) => image.category === selectedOption)
+        .map((image) => ({
+          ...image,
+          position:getRandomPosition(),
+        }));
+      setImages(filteredImages);
+    }
+  }, [selectedOption]);
+
+  const getRandomPosition = () => {
+    // Ajusta estos valores para controlar la dispersión
+    const maxX = window.innerWidth - 250; // Ancho de la ventana menos el ancho de la imagen
+    const maxY = window.innerHeight - 250; // Altura de la ventana menos algo de espacio
+  
+    const randomX = Math.floor(Math.random() * maxX); // Posición aleatoria en X
+    const randomY = Math.floor(Math.random() * maxY); // Posición aleatoria en Y
+  
+    return { x: randomX, y: randomY }; // Devuelve la posición dispersa
+  };
+
+  const handleOptionClick = (option) => {
+    setSelectedOption(option);
+  };
+
+  const handleDoubleClick = (id) => {
+    setVisibleInfo(visibleInfo === id ? null : id);
+  };
+
+  const handleTouchStart = () => {
+    touchStartTime.current = Date.now();
+    touchMoved.current = false;
+  };
+
+  const handleTouchMove = () => {
+    touchMoved.current = true;
+  };
+
+  const handleTouchEnd = (id) => {
+    const touchDuration = Date.now() - touchStartTime.current;
+    if (!touchMoved.current && touchDuration < 500) {
+      // Consideramos esto como un toque simple
+      setVisibleInfo((prevVisibleInfo) =>
+        prevVisibleInfo === id ? null : id
+      );
+    }
+  };
+
+  const handleBackClick = () => {
+    setSelectedOption(null);
+    setVisibleInfo(null);
+  };
+
+  return (
+    <div className="app">
+      <div className="logo-container">
+        <img src="/ExpoLidercom/assets/LogoTextoAzul.png" alt="Logo" className="logo" />
+      </div>
+      {!selectedOption ? (
+        <div className="start-screen">
+          <h1 className="start-screen-title">Pantalla de Inicio</h1>
+          <div className="buttons-container">
+            <button onClick={() => handleOptionClick('Telecomunicaciones')} className="option-button">Telecomunicaciones</button>
+            <button onClick={() => handleOptionClick('Imagen')} className="option-button">Imagen</button>
+            <button onClick={() => handleOptionClick('Seguridad')} className="option-button">Seguridad</button>
+          </div>
+        </div>
+      ) : (
+        <div className="images-container">
+          <button onClick={handleBackClick} className="back-button">Volver</button>
+          {images.map((image, index) => (
+            <Draggable
+              key={image.id}
+              defaultPosition={image.position}
+              bounds="parent"
+            >
+              <div className="image-wrapper">              
+                <div 
+                  className={`image-box floating floating-${index % 3}`}
+                  style={{ animationDelay: `${index * 0.4}s` }}
+                  onDoubleClick={() => handleDoubleClick(image.id)}
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={() => handleTouchEnd(image.id)}
+                >
+                  <img src={image.src} alt={image.info} className="image animate__animated animate__backInUp" />
+                </div>
+                {visibleInfo === image.id && (
+                  <div className="info-box">
+                    <p>{image.info}</p>
+                  </div>
+                )}
+              </div>
+            </Draggable>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default App;
+
+
+
+.app {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .start-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: #f0f0f0;
+    padding: 2rem;
+  }
+  
+  .start-screen-title {
+    font-size: 5rem;
+    margin-bottom: 4rem;
+    color: #333;
+    text-align: center;
+  }
+  
+  .buttons-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;  
+    width: 100%;
+    max-width: 600px;  /* Adjust this value as needed */
+  }
+  
+  .option-button {
+    padding: 2rem 3rem;
+    font-size: 2.5rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;  /* Make buttons full width of their container */
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .option-button:hover, .option-button:active {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+  
+  /* Responsive adjustments */
+  @media (max-height: 800px) {
+    .start-screen-title {
+      font-size: 4rem;
+      margin-bottom: 3rem;
+    }
+  
+    .option-button {
+      padding: 1.5rem 2.5rem;
+      font-size: 2rem;
+    }
+  
+    .buttons-container {
+      gap: 1.5rem;
+    }
+  }
+  
+  @media (max-height: 600px) {
+    .start-screen-title {
+      font-size: 3rem;
+      margin-bottom: 2rem;
+    }
+  
+    .option-button {
+      padding: 1rem 2rem;
+      font-size: 1.5rem;
+    }
+  
+    .buttons-container {
+      gap: 1rem;
+    }
+  }
+  
+  .images-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #f0f0f0;
+  }
+  
+  .image-wrapper {
+    position: absolute;
+    cursor: move;
+    padding: 10px;
+    user-select: none; 
+  }
+  
+  
+  .image-box {
+    width: 250px;
+    height: auto;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  
+  .image {
+    width: 100%; /* Cambia el ancho de la imagen */
+    height: auto; /* Mantiene la proporción de la imagen */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  @keyframes floating {
+    0% { transform: translateY(0px); }
+    50%  { transform: translateY(15px); }
+    100%   { transform: translateY(0px); }   
+  }
+  
+  .floating {
+    animation-name: floating;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+  }
+  
+  .floating-0 { animation-delay: 0s; }
+  .floating-1 { animation-delay: -1s; }
+  .floating-2 { animation-delay: -2s; }
+  
+  .image-wrapper:hover .image-box {
+    animation-play-state: paused;
+  }
+  
+  .info-box {
+    background-color: white;
+    border-radius: 20px;
+    margin-top: 90px;
+    padding: 15px;
+    position: absolute;
+    top: 270px;
+    left: 0;
+    width: 250px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+    border: 2px solid #333;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    animation: popIn 0.3s ease-out;
+    transform-origin: top left;
+  }
+  
+  .info-box::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 20px;
+    border-width: 0 20px 20px;
+    border-style: solid;
+    border-color: transparent transparent white;
+    filter: drop-shadow(0 -2px 2px rgba(0, 0, 0, 0.1));
+  }
+  
+  @keyframes popIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.5) translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+  
+  .back-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .back-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .logo-container {
+    position: fixed;
+    width: 400px;
+    height: 100px;
+  }
+  .logo{
+    width: 100%;
+    height: 100%;
+  }
+  
+  
