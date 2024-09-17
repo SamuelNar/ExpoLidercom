@@ -72,14 +72,42 @@ const imageData = [
   },
 ];
 
+const startScreen = [
+  {
+    id: "start1",
+    src: "/ExpoLidercom/assets/Alarma.png",
+    isTitle: false
+  },
+  {
+    id: "start2",
+    src: "/ExpoLidercom/assets/Antena.png",
+    isTitle: false
+  },
+  {
+    id: "start3",
+    src: "/ExpoLidercom/assets/Domo.png",
+    isTitle: false
+  },
+  {
+    id: "start4",
+    src: "/ExpoLidercom/assets/WiFi.png",
+    isTitle: false
+  },
+  {
+    id: "title",
+    src: "/ExpoLidercom/assets/SomosLiderCom.png",
+    isTitle: true
+  }
+]
 const App = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [images, setImages] = useState([]);
   const [flippedCards, setFlippedCards] = useState({});
+  const [startImages, setStartImages] = useState([]);
+  const [tick, setTick] = useState(0);
+  const animationFrameRef = useRef();
   const touchTimeout = useRef(null);
   const lastTap = useRef(0);
-  const touchStartTime = useRef(0);
-  const touchMoved = useRef(false);
 
   useEffect(() => {
     if (selectedOption) {
@@ -90,13 +118,28 @@ const App = () => {
           position: getRandomPosition(),
         }));
       setImages(filteredImages);
+    } else {
+      const positionedStartImages = startScreen.map(img => ({
+        ...img,
+        position: getRandomPosition(),
+        velocity: {
+          x: (Math.random() - 0.5) * 2,
+          y: (Math.random() - 0.5) * 2
+        }
+      }));
+      setStartImages(positionedStartImages);
     }
-    console.log("Estado flippedCards actualizado:", flippedCards);
+
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
   }, [selectedOption, flippedCards]);
 
   const getRandomPosition = () => {
-    const maxX = window.innerWidth - 250;
-    const maxY = window.innerHeight - 250;
+    const maxX = window.innerWidth - 150; // Ajusta el tamaño según tus imágenes
+    const maxY = window.innerHeight - 150; // Ajusta el tamaño según tus imágenes
 
     const randomX = Math.floor(Math.random() * maxX);
     const randomY = Math.floor(Math.random() * maxY);
@@ -121,12 +164,64 @@ const App = () => {
       [id]: !prevState[id], // Alterna el estado de la imagen actual
     }));
   };
+  useEffect(() => {
+    const animateImages = () => {
+      setStartImages(prevImages =>
+        prevImages.map(img => {
+          let newX = img.position.x + img.velocity.x;
+          let newY = img.position.y + img.velocity.y;
+  
+          // Rebote en los bordes
+          if (newX <= 0 || newX >= window.innerWidth - 150) {
+            img.velocity.x *= -1;
+          }
+          if (newY <= 0 || newY >= window.innerHeight - 150) {
+            img.velocity.y *= -1;
+          }
+  
+          return {
+            ...img,
+            position: {
+              x: newX,
+              y: newY
+            }
+          };
+        })
+      );
+  
+      setTick(prevTick => prevTick + 1); // Forzar el re-renderizado
+  
+      animationFrameRef.current = requestAnimationFrame(animateImages);
+    };
+  
+    animateImages();
+  
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, []);
+  
 
+  useEffect(() => {
+    const handleTouchStart = () => {
+      // Esto puede ayudar a asegurar que la animación siga corriendo en pantallas táctiles.
+    };
+  
+    window.addEventListener('touchstart', handleTouchStart);
+  
+    return () => {
+      window.removeEventListener('touchstart', handleTouchStart);
+    };
+  }, []);
+  
+  
   const handleTouchStart = (id, e) => {
     e.preventDefault(); // Previene el comportamiento por defecto
     const now = Date.now();
     const DOUBLE_TAP_DELAY = 300;
-    
+
     if (now - lastTap.current < DOUBLE_TAP_DELAY) {
       // Doble toque detectado
       handleFlip(id);
@@ -136,20 +231,8 @@ const App = () => {
         // Toque simple (para arrastrar)
       }, DOUBLE_TAP_DELAY);
     }
-    
+
     lastTap.current = now;
-  };
-
-  const handleTouchMove = () => {
-    touchMoved.current = true;
-  };
-
-  const handleTouchEnd = (id) => {
-    const touchDuration = Date.now() - touchStartTime.current;
-    if (!touchMoved.current && touchDuration < 500) {
-      console.log(`Touched image with id: ${id}`);
-      handleFlip(id);
-    }
   };
 
   const handleBackClick = () => {
@@ -168,24 +251,26 @@ const App = () => {
       </div>
       {!selectedOption ? (
         <div className="start-screen">
-          <h1 className="start-screen-title">Pantalla de Inicio</h1>
+          {startImages.map((image) => (
+            <img
+              key={image.id}
+              src={image.src}
+              alt={`Start Image ${image.id}`}
+              className={`start-image animate__animated animate__backInUp ${image.isTitle ? "title-image" : ""}`}
+              style={{
+                left: `${image.position.x}px`,
+                top: `${image.position.y}px`,
+              }}
+            />
+          ))}
           <div className="buttons-container">
-            <button
-              onClick={() => handleOptionClick("Telecomunicaciones")}
-              className="option-button"
-            >
+            <button onClick={() => handleOptionClick("Telecomunicaciones")} className="option-button">
               Telecomunicaciones
             </button>
-            <button
-              onClick={() => handleOptionClick("Imagen")}
-              className="option-button"
-            >
+            <button onClick={() => handleOptionClick("Imagen")} className="option-button">
               Imagen
             </button>
-            <button
-              onClick={() => handleOptionClick("Seguridad")}
-              className="option-button"
-            >
+            <button onClick={() => handleOptionClick("Seguridad")} className="option-button">
               Seguridad
             </button>
           </div>
@@ -201,10 +286,10 @@ const App = () => {
               defaultPosition={image.position}
               bounds="parent"
             >
-              <div 
+              <div
                 className={`image-wrapper`}
                 onDoubleClick={() => handleDoubleClick(image.id)}
-                onTouchStart={(e) => handleTouchStart(image.id, e)}          
+                onTouchStart={(e) => handleTouchStart(image.id, e)}
               >
                 <div
                   className={`image-box ${flippedCards[image.id] ? "flipped" : ""}`}
