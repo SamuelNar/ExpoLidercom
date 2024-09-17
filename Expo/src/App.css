@@ -1,6 +1,6 @@
 html, body {
   overflow: hidden;
-  touch-action: none; 
+  
 }
 .app {
   width: 100vw;
@@ -8,43 +8,59 @@ html, body {
   overflow: hidden;
   position: relative;
 }
+.app, .start-screen, .images-container {
+  overflow: hidden; /* Esto puede estar afectando la animación en pantallas táctiles */
+}
 
 .start-screen {
   width: 100vw;
   height: 100vh;
   position: relative;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
+
 .start-image {
-  width: 100px;  /* Ajusta según el tamaño deseado para las demás imágenes */
-  height: auto;
   position: absolute;
-  transition: all 0.5s ease;
+  width: 100px; /* Ajusta el tamaño según sea necesario */
+  height: auto;
+  z-index: 1;
 }
+
+.start-image img {
+  width: 100%;
+  height: auto;  
+}
+
 .title-image {
   width: 400px;  /* Tamaño más grande para la imagen con el título */
   z-index: 10;
 }
 
 .buttons-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative; /* Asegura que los botones estén encima de las imágenes */
+  z-index: 20;
   display: flex;
   flex-direction: column;
-  margin: 20px;
-  z-index: 100;
+  align-items: center;
 }
 
 .option-button {
-  padding: 15px 30px;
-  font-size: 18px;
+  width: 500px; /* Tamaño fijo para todos los botones */
+  height: 250px; 
+  padding: 0;
+  font-size: 50px;
   cursor: pointer;
   background-color: rgba(0, 123, 255);
   color: white;
   border: none;
   border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
   margin-bottom: 20px;
   transition: background-color 0.3s ease;
 }
@@ -62,6 +78,8 @@ html, body {
   }
 
   .option-button {
+    width: 300px;
+    height: auto;
     padding: 1.5rem 2.5rem;
     font-size: 2rem;
   }
@@ -86,6 +104,7 @@ html, body {
     gap: 1rem;
   }
 }
+
 
 .images-container {
   position: relative;
@@ -170,22 +189,9 @@ html, body {
 .floating-1 { animation-delay: -1s; }
 .floating-2 { animation-delay: -2s; }
 
-.image-wrapper:hover .image-box {
+/*.image-wrapper:hover .image-box {
   animation-play-state: paused;
-}
-
-/*
-.info-box::before {
-  content: '';
-  position: absolute;
-  top: -20px;
-  left: 20px;
-  border-width: 0 20px 20px;
-  border-style: solid;
-  border-color: transparent transparent white;
-  filter: drop-shadow(0 -2px 2px rgba(0, 0, 0, 0.1));
-}
-*/
+}*/
 
 @keyframes popIn {
   0% {
@@ -216,12 +222,11 @@ html, body {
 }
 
 .logo-container {
-  position: fixed;
-  width: 400px;
-  height: 100px;
-}
-.logo{
-  width: 100%;
-  height: 100%;
+  margin-bottom: 40px; 
+  z-index: 10;
 }
 
+.logo{
+  width: 350px;
+  height: auto;
+}

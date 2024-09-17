@@ -97,8 +97,33 @@ const startScreen = [
     id: "title",
     src: "/ExpoLidercom/assets/SomosLiderCom.png",
     isTitle: true
-  }
-]
+  },
+  {
+    id: "start5",
+    src: "/ExpoLidercom/assets/Alarma.png",
+    color: "red",
+    isTitle: false
+  },
+  {
+    id: "start6",
+    src: "/ExpoLidercom/assets/Alarma.png",
+    color: "black",
+    isTitle: false
+  },
+  {
+    id: "start7",
+    src: "/ExpoLidercom/assets/WiFi.png",
+    color: "green",
+    isTitle: false
+  },
+  {
+    id: "start8",
+    src: "/ExpoLidercom/assets/WiFi.png",
+    color: "black",
+    isTitle: false
+  },
+];
+
 const App = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [images, setImages] = useState([]);
@@ -128,6 +153,7 @@ const App = () => {
         }
       }));
       setStartImages(positionedStartImages);
+      startAnimation(); // Asegúrate de iniciar la animación cuando se vuelva a la pantalla de inicio
     }
 
     return () => {
@@ -135,7 +161,7 @@ const App = () => {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [selectedOption, flippedCards]);
+  }, [selectedOption]);
 
   const getRandomPosition = () => {
     const maxX = window.innerWidth - 150; // Ajusta el tamaño según tus imágenes
@@ -164,13 +190,14 @@ const App = () => {
       [id]: !prevState[id], // Alterna el estado de la imagen actual
     }));
   };
-  useEffect(() => {
+
+  const startAnimation = () => {
     const animateImages = () => {
       setStartImages(prevImages =>
         prevImages.map(img => {
           let newX = img.position.x + img.velocity.x;
           let newY = img.position.y + img.velocity.y;
-  
+
           // Rebote en los bordes
           if (newX <= 0 || newX >= window.innerWidth - 150) {
             img.velocity.x *= -1;
@@ -178,7 +205,7 @@ const App = () => {
           if (newY <= 0 || newY >= window.innerHeight - 150) {
             img.velocity.y *= -1;
           }
-  
+
           return {
             ...img,
             position: {
@@ -188,35 +215,27 @@ const App = () => {
           };
         })
       );
-  
+
       setTick(prevTick => prevTick + 1); // Forzar el re-renderizado
-  
+
       animationFrameRef.current = requestAnimationFrame(animateImages);
     };
-  
+
     animateImages();
-  
+
     return () => {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, []);
-  
+  };
 
   useEffect(() => {
-    const handleTouchStart = () => {
-      // Esto puede ayudar a asegurar que la animación siga corriendo en pantallas táctiles.
-    };
-  
-    window.addEventListener('touchstart', handleTouchStart);
-  
-    return () => {
-      window.removeEventListener('touchstart', handleTouchStart);
-    };
-  }, []);
-  
-  
+    if (!selectedOption) {
+      startAnimation(); // Reinicia la animación cuando se regresa a la pantalla de inicio
+    }
+  }, [selectedOption]);
+
   const handleTouchStart = (id, e) => {
     e.preventDefault(); // Previene el comportamiento por defecto
     const now = Date.now();
@@ -240,28 +259,54 @@ const App = () => {
     setFlippedCards({});
   };
 
+  function getHueRotation(color) {
+    switch(color) {
+      case 'red': return '0deg';    // Ajusta estos valores según el color que necesites
+      case 'blue': return '240deg';
+      case 'green': return '120deg';
+      case 'black': return '0deg';  // El negro no requiere rotación
+      default: return '0deg';
+    }
+  }
+  
+
   return (
     <div className="app">
-      <div className="logo-container">
-        <img
-          src="/ExpoLidercom/assets/LogoTextoAzul.png"
-          alt="Logo"
-          className="logo"
-        />
-      </div>
       {!selectedOption ? (
         <div className="start-screen">
-          {startImages.map((image) => (
+          <div className="logo-container">
             <img
-              key={image.id}
-              src={image.src}
-              alt={`Start Image ${image.id}`}
-              className={`start-image animate__animated animate__backInUp ${image.isTitle ? "title-image" : ""}`}
-              style={{
-                left: `${image.position.x}px`,
-                top: `${image.position.y}px`,
-              }}
+              src="/ExpoLidercom/assets/LogoTextoAzul.png"
+              alt="Logo"
+              className="logo"
             />
+          </div>
+          {startImages.map((image) => (
+            <Draggable
+              key={image.id}
+              defaultPosition={image.position}
+              bounds="parent"
+            >
+              <div
+                className={`start-image animate__animated animate__backInUp ${image.isTitle ? "title-image" : ""}`}
+                onDoubleClick={() => handleDoubleClick(image.id)}
+                onTouchStart={(e) => handleTouchStart(image.id, e)}
+                style={{
+                  width: image.isTitle ? '400px' : '100px',
+                  height: 'auto',
+                  position: 'absolute',
+                  left: `${image.position.x}px`,
+                  top: `${image.position.y}px`,
+                  zIndex: 1
+                }}
+              >
+                <img
+                  src={image.src}
+                  alt={`Start Image ${image.id}`}
+                  style={{ width: '100%', height: '100%', filter: `hue-rotate(${getHueRotation(image.color)})` }}
+                />
+              </div>
+            </Draggable>
           ))}
           <div className="buttons-container">
             <button onClick={() => handleOptionClick("Telecomunicaciones")} className="option-button">
