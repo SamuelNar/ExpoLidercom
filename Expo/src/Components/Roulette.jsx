@@ -1,4 +1,4 @@
-import { useState, useEffect,useRef} from 'react';
+import { useState, useRef } from 'react';
 import { Wheel } from 'react-custom-roulette';
 import '../style/Roulette.css';
 
@@ -12,95 +12,107 @@ const data = [
 
 export default function Roulette() {
   const [mustSpin, setMustSpin] = useState(false);
-  const [prizeNumber, setPrizeNumber] = useState(null);
+  const [prizeNumber, setPrizeNumber] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const wheelRef = useRef(null);
+  const startAngle = useRef(0);
+  const isTouching = useRef(false);
+  const spinTriggered = useRef(false);
 
-  // Para gestionar el giro de la ruleta
-  const startAngle = useRef(0); // Ángulo de inicio del giro
-  const currentAngle = useRef(0); // Ángulo actual de la ruleta
-  const handleSpin = () => {
-    setMustSpin(true);
-    setPrizeNumber(Math.floor(Math.random() * data.length));
-    setShowModal(false);
+  const handleSpinClick = () => {
+    if (!mustSpin) {
+      triggerSpin();
+    }
   };
 
-  useEffect(() => {
-    if (!mustSpin && prizeNumber !== null) {
-      setTimeout(() => {
-        setShowModal(true);
-      }, 1000); // Espera 1 segundo después de que la ruleta se detiene para mostrar el modal
+  const triggerSpin = () => {
+    if (!spinTriggered.current) {
+      spinTriggered.current = true;
+      const newPrizeNumber = Math.floor(Math.random() * data.length);
+      setPrizeNumber(newPrizeNumber);
+      setMustSpin(true);
     }
-  }, [mustSpin, prizeNumber]);
-
-  const closeModal = () => {
-    setShowModal(false);
   };
 
   const handleTouchStart = (e) => {
-    if (wheelRef.current) {
+    if (!mustSpin) {
+      isTouching.current = true;
       const touch = e.touches[0];
-      startAngle.current = Math.atan2(touch.clientY - wheelRef.current.getBoundingClientRect().top, touch.clientX - wheelRef.current.getBoundingClientRect().left);
+      const rect = wheelRef.current.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      startAngle.current = Math.atan2(touch.clientY - centerY, touch.clientX - centerX);
     }
   };
 
   const handleTouchMove = (e) => {
-    if (wheelRef.current) {
+    if (isTouching.current && !mustSpin) {
       const touch = e.touches[0];
-      const currentTouchAngle = Math.atan2(touch.clientY - wheelRef.current.getBoundingClientRect().top, touch.clientX - wheelRef.current.getBoundingClientRect().left);
-      const deltaAngle = currentTouchAngle - startAngle.current;
+      const rect = wheelRef.current.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const currentAngle = Math.atan2(touch.clientY - centerY, touch.clientX - centerX);
+      const rotation = ((currentAngle - startAngle.current) * 180 / Math.PI + 360) % 360;
 
-      // Ajusta el giro de la ruleta basándote en el ángulo de diferencia
-      if (!mustSpin) {
-        currentAngle.current += deltaAngle * 180 / Math.PI; // Convertir de radianes a grados
-        wheelRef.current.style.transform = `rotate(${currentAngle.current}deg)`;
-        startAngle.current = currentTouchAngle; // Actualiza el ángulo inicial
+      // Aplicar la rotación solo al contenido interno de la rueda
+      const wheelContent = wheelRef.current.querySelector('.roulette-pro');
+      if (wheelContent) {
+        wheelContent.style.transform = `rotate(${rotation}deg)`;
       }
     }
   };
 
   const handleTouchEnd = () => {
-    // Lógica cuando el usuario levanta el dedo de la pantalla
-    setMustSpin(true);
+    if (isTouching.current && !mustSpin) {
+      isTouching.current = false;
+      triggerSpin();
+    }
   };
 
   return (
     <div className="root-roulette">
-    <div className="roulette-container">
-      <h2>Juego de la Ruleta</h2>
-      <div
-        className="roulette"
-        ref={wheelRef}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        <Wheel
-          mustStartSpinning={mustSpin}
-          prizeNumber={prizeNumber}
-          data={data}
-          onStopSpinning={() => {
-            setMustSpin(false);
-            setShowModal(true); // Muestra el modal cuando termina el giro
-          }}
-          backgroundColors={['#3e3e3e', '#df3428']}
-          textColors={['#ffffff']}
-        />
-      </div>
-      <button onClick={handleSpin} disabled={mustSpin}>
-        {mustSpin ? 'Girando...' : 'Girar'}
-      </button>
-      {showModal && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h3>¡Felicidades!</h3>
-            <p>Has ganado:</p>
-            <h2>{data[prizeNumber].option}</h2>
-            <button onClick={closeModal}>Cerrar</button>
-          </div>
+      <div className="roulette-container">
+        <h2>Juego de la Ruleta</h2>
+        <div
+          className="roulette"
+          ref={wheelRef}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          <Wheel
+            mustStartSpinning={mustSpin}
+            prizeNumber={prizeNumber}
+            data={data}
+            onStopSpinning={() => {
+              setMustSpin(false);
+              setShowModal(true);
+              spinTriggered.current = false;
+            }}
+            backgroundColors={['#3e3e3e', '#df3428']}
+            textColors={['#ffffff']}
+            outerBorderWidth={5}
+            outerBorderColor="#000"
+            innerBorderWidth={5}
+            innerRadius={30}
+            radiusLineWidth={1}
+            radiusLineColor="#ffffff"
+          />
         </div>
-      )}
+        <button onClick={handleSpinClick} disabled={mustSpin}>
+          {mustSpin ? 'Girando...' : 'Girar'}
+        </button>
+        {showModal && (
+          <div className="modal-overlay" onClick={() => setShowModal(false)}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <h3>¡Felicidades!</h3>
+              <p>Has ganado:</p>
+              <h2>{data[prizeNumber].option}</h2>
+              <button onClick={() => setShowModal(false)}>Cerrar</button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
-  </div>
   );
 }

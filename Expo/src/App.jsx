@@ -3,11 +3,11 @@ import Roulette from "./Components/Roulette";
 import Presentacion from "./Components/Presentacion";
 import { Routes, Route } from 'react-router-dom';
 import Navigation from "./Components/Navigation";
-const App = () => {
 
+const App = () => {
   return (
     <>
-    <Navigation />
+      <Navigation />
       <Routes>
         <Route path="/" element={<Presentacion />} />
         <Route path="/roulette" element={<Roulette />} />
