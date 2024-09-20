@@ -54,7 +54,7 @@ const Trivia = () => {
         ? isLastQuestion
           ? "¡Felicitaciones!"
           : "¡Correcto! Seguimos en carrera."
-        : "Upps, creo que va a tener que conocer más sobre el mundo del maní! Reiniciando...";
+        : "Upps, creo que va a tener que conocer más sobre nosotros";
 
       setFeedback({ message: feedbackMessage });
 
