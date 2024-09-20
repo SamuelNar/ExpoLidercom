@@ -8,6 +8,9 @@ const data = [
   { option: 'Premio 3', style: { backgroundColor: '#2ecc71', textColor: '#fff' } },
   { option: 'Premio 4', style: { backgroundColor: '#e74c3c', textColor: '#fff' } },
   { option: 'Premio 5', style: { backgroundColor: '#9b59b6', textColor: '#fff' } },
+  { option: 'Premio 6', style: { backgroundColor: 'purple', textColor: '#fff' } },
+  { option: 'Premio 7', style: { backgroundColor: 'black', textColor: '#fff' } },
+  { option: 'Premio 8', style: { backgroundColor: 'orange', textColor: '#fff' } },
 ];
 
 export default function Roulette() {
@@ -99,7 +102,7 @@ export default function Roulette() {
             radiusLineColor="#ffffff"
           />
         </div>
-        <button onClick={handleSpinClick} disabled={mustSpin}>
+        <button className='girar' onClick={handleSpinClick} disabled={mustSpin}>
           {mustSpin ? 'Girando...' : 'Girar'}
         </button>
         {showModal && (

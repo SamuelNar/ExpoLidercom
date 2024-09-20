@@ -75,51 +75,38 @@ const imageData = [
     {
       id: "start1",
       src: "/ExpoLidercom/assets/Alarma.png",
-      isTitle: false
     },
     {
       id: "start2",
       src: "/ExpoLidercom/assets/Antena.png",
-      isTitle: false
     },
     {
       id: "start3",
       src: "/ExpoLidercom/assets/Domo.png",
-      isTitle: false
     },
     {
       id: "start4",
       src: "/ExpoLidercom/assets/WiFi.png",
-      isTitle: false
     },
     {
       id: "title",
       src: "/ExpoLidercom/assets/SomosLiderCom.png",
-      isTitle: true
     },
     {
       id: "start5",
       src: "/ExpoLidercom/assets/Alarma.png",
-      color: "red",
-      isTitle: false
     },
     {
       id: "start6",
       src: "/ExpoLidercom/assets/Alarma.png",
-      color: "black",
-      isTitle: false
     },
     {
       id: "start7",
       src: "/ExpoLidercom/assets/WiFi.png",
-      color: "green",
-      isTitle: false
     },
     {
       id: "start8",
       src: "/ExpoLidercom/assets/WiFi.png",
-      color: "black",
-      isTitle: false
     },
   ];
   
@@ -277,88 +264,95 @@ export default function Presentacion() {
     }
   }
 
-  return(
+  return (
     <div className="app">
-    {!selectedOption ? (
-      <div className="start-screen">
-        <div className="logo-container">
-          <img
-            src="/ExpoLidercom/assets/LogoTextoAzul.png"
-            alt="Logo"
-            className="logo"
-          />
-        </div>
-        {startImages.map((image) => (
-          <Draggable
-            key={image.id}
-            defaultPosition={image.position}
-            bounds="parent"
-          >
-            <div
-              className={`start-image animate__animated animate__backInUp ${image.isTitle ? "title-image" : ""}`}
-              onDoubleClick={() => handleDoubleClick(image.id)}
-              onTouchStart={(e) => handleTouchStart(image.id, e)}
-              style={{
-                width: image.isTitle ? '400px' : '100px',
-                height: 'auto',
-                position: 'absolute',
-                left: `${image.position.x}px`,
-                top: `${image.position.y}px`,
-                zIndex: image.isTitle ? 10 : 1
-              }}
-            >
-              <img
-                src={image.src}
-                alt={`Start Image ${image.id}`}
-                style={{ width: '100%', height: '100%', filter: `hue-rotate(${getHueRotation(image.color)})` }}
-              />
-            </div>
-          </Draggable>
-        ))}
-        <div className="buttons-container">
-          <button onClick={() => handleOptionClick("Telecomunicaciones")} className="option-button">
-            Telecomunicaciones
-          </button>
-          <button onClick={() => handleOptionClick("Imagen")} className="option-button">
-            Imagen
-          </button>
-          <button onClick={() => handleOptionClick("Seguridad")} className="option-button">
-            Seguridad
-          </button>
-        </div>
-      </div>
-    ) : (
-      <div className="images-container">
-        <button onClick={handleBackClick} className="back-button">
-          Volver
-        </button>
-        {images.map((image) => (
-          <Draggable
-            key={image.id}
-            defaultPosition={image.position}
-            bounds="parent"
-          >
-            <div
-              className={`image-wrapper`}
-              onDoubleClick={() => handleDoubleClick(image.id)}
-              onTouchStart={(e) => handleTouchStart(image.id, e)}
+      {!selectedOption ? (
+        <div className="start-screen">
+          <div className="logo-container">
+            <img
+              src="/ExpoLidercom/assets/LogoTextoAzul.png"
+              alt="Logo"
+              className="logo"
+            />
+          </div>
+          {startImages.map((image) => (
+            <Draggable
+              key={image.id}
+              defaultPosition={image.position}
+              bounds="parent"
             >
               <div
-                className={`image-box ${flippedCards[image.id] ? "flipped" : ""}`}
+                className={`start-image animate__animated animate__backInUp`}
+                onDoubleClick={() => handleDoubleClick(image.id)}
+                onTouchStart={(e) => handleTouchStart(image.id, e)}
+                style={{
+                  width: image.id === 'title' ? '300px' : '100px', // Cambia el tamaño solo si es la imagen con id 'title'
+                  height: 'auto',
+                  position: 'absolute',
+                  left: `${image.position.x}px`,
+                  top: `${image.position.y}px`,
+                  
+                }}
               >
-                <div className="image-content">
-                  <img src={image.src} alt={image.info} className="image animate__animated animate__backInUp" />
-                  <div className="info-box">
-                    <p>{image.info}</p>
+                <img
+                  src={image.src}
+                  alt={`Start Image ${image.id}`}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    filter: `hue-rotate(${getHueRotation(image.color)})`
+                  }}
+                />
+              </div>
+            </Draggable>
+          ))}
+          <div className="buttons-container">
+            <button onClick={() => handleOptionClick("Telecomunicaciones")} className="option-button">
+              Telecomunicaciones
+            </button>
+            <button onClick={() => handleOptionClick("Imagen")} className="option-button">
+              Imagen
+            </button>
+            <button onClick={() => handleOptionClick("Seguridad")} className="option-button">
+              Seguridad
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="images-container">
+          <button onClick={handleBackClick} className="back-button">
+            Volver
+          </button>
+          {images.map((image) => (
+            <Draggable
+              key={image.id}
+              defaultPosition={image.position}
+              bounds="parent"
+            >
+              <div
+                className={`image-wrapper`}
+                onDoubleClick={() => handleDoubleClick(image.id)}
+                onTouchStart={(e) => handleTouchStart(image.id, e)}
+              >
+                <div className={`image-box ${flippedCards[image.id] ? "flipped" : ""}`}>
+                  <div className="image-content">
+                    <img
+                      src={image.src}
+                      alt={image.info}
+                      className="image animate__animated animate__backInUp floating"
+                    />
+                    <div className="info-box">
+                      <p>{image.info}</p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </Draggable>
-        ))}
-      </div>
-    )}
-  </div>
-  )
+            </Draggable>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+  
 
 }

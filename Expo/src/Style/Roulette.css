@@ -10,6 +10,7 @@
   padding: 0; /* Elimina el padding si es necesario */
   margin: 0; /* Elimina el margin si es necesario */
   text-align: center;
+  touch-action: none;
 }
 
 .roulette-container {
@@ -23,7 +24,6 @@
 }
 
 .roulette {
-  margin-bottom: 20px;
   display: flex;
   justify-content: center; /* Centra horizontalmente el contenido de la ruleta */
   align-items: center; /* Asegura que el contenido esté centrado verticalmente si es necesario */
@@ -31,9 +31,13 @@
   max-width: 600px; /* Ajusta el ancho máximo según sea necesario */
 }
 
+.girar{
+  margin-bottom: 150px;
+}
+
 button {
   position: relative;
-  z-index: 10; /* Asegúrate de que el botón esté en el frente */
+  z-index: 200; /* Asegúrate de que el botón esté en el frente */
 }
 
 button:disabled {
