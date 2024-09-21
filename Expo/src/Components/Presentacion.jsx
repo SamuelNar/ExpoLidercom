@@ -157,11 +157,11 @@ export default function Presentacion() {
   };
 
   const getRandomPosition = () => {
-    const maxX = window.innerWidth - 150; // Ajusta el tamaño según tus imágenes
-    const maxY = window.innerHeight - 150; // Ajusta el tamaño según tus imágenes
+    const maxX = (window.innerWidth / 2 )- 150; // Ajusta el tamaño según tus imágenes
+    const maxY = (window.innerHeight / 2 )- 150; // Ajusta el tamaño según tus imágenes
 
-    const randomX = Math.floor(Math.random() * maxX);
-    const randomY = Math.floor(Math.random() * maxY);
+    const randomX = Math.floor(Math.random() * maxX) + window.innerWidth / 4;
+    const randomY = Math.floor(Math.random() * maxY) + window.innerHeight / 4;
 
     return { x: randomX, y: randomY };
   };

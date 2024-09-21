@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
-
+import '../Style/Navigation.css';
 const Navigation = () => (
   <nav>
     <ul>
-      <li style={{color: 'black'}}><Link to="/">Presentación</Link></li>
-      <li style={{color: 'black'}}><Link to="/roulette">Ruleta</Link></li>
-      <li style={{color: 'black'}}><Link to="/trivia">Trivia</Link></li>
+      <li><Link to="/">Presentación</Link></li>
+      <li><Link to="/roulette">Ruleta</Link></li>
+      <li><Link to="/trivia">Trivia</Link></li>
     </ul>
   </nav>
 );

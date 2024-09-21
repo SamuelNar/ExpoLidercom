@@ -1,0 +1,30 @@
+nav {
+    position: fixed; /* Para que el menú se quede fijo en la parte superior */
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 1000; /* Asegura que el menú esté por encima de otros elementos */
+    padding: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Añade sombra para resaltar el menú */
+  }
+
+  nav ul {
+    display: flex;
+    justify-content: space-around; /* Distribuye los elementos horizontalmente */
+  }
+  
+  nav li {
+    list-style: none;
+  }
+  
+  nav a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+  }
+  
+  nav a:hover {
+    color: #ff6347;
+  }
+  

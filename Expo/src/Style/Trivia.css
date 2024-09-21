@@ -248,6 +248,9 @@
     
   }
   
+  .trivia-container{
+    margin-top: 80px;
+  }
   
   @keyframes slideUp {
     0% {
