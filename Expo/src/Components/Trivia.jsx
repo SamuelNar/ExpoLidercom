@@ -1,6 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect,useRef} from "react";
 import maniImagen from "/assets/personaje2.png";
 import imgCorner from "/assets/Formaazul.png";
+import Wrong from "/assets/Wrong.mp3";
+import Finish from "/assets/Finish.mp3";
+import Correct from "/assets/Correct.mp3";
 import "../Style/Trivia.css";
 
 const Trivia = () => {
@@ -24,11 +27,22 @@ const Trivia = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
 
+  const correctSound = new Audio(Correct);
+  const wrongSound = new Audio(Wrong);
+  const finishSound = new Audio(Finish);
+  const completionSoundPlayed = useRef(false);
+
   useEffect(() => {
     if (feedback && feedback.message.includes("Felicitaciones")) {
+      if (!completionSoundPlayed.current) {
+        finishSound.play(); // Reproducir sonido al mostrar el mensaje de felicitaciones
+        completionSoundPlayed.current = true; // Marcar que el sonido ya se reprodujo
+      }
+      const feedbackDuration = 3000; // Duración del mensaje de felicitaciones
       const autoRestartTimer = setTimeout(() => {
         handleRestartQuiz();
-      }, 2000); // Duración del mensaje de felicitaciones
+      }, feedbackDuration); // Reiniciar después de que el mensaje haya durado
+
       return () => clearTimeout(autoRestartTimer);
     }
   }, [feedback]);
@@ -39,6 +53,7 @@ const Trivia = () => {
     setIsCorrect(null);
     setFeedback(null);
     setIsAnswerSubmitted(false);
+    completionSoundPlayed.current = false;
   };
 
   const handleAnswerSelect = (index) => {
@@ -58,6 +73,12 @@ const Trivia = () => {
 
       setFeedback({ message: feedbackMessage });
 
+      if (isAnswerCorrect) {
+        correctSound.play();
+      } else{
+        wrongSound.play();
+      }
+
       const feedbackDuration = 3000; // Duración del feedback
 
       setTimeout(() => {
@@ -66,7 +87,7 @@ const Trivia = () => {
           setSelectedAnswer(null);
           setIsCorrect(null);
           setFeedback(null);
-        } else if (isAnswerCorrect && isLastQuestion) {
+        } else if (isAnswerCorrect && isLastQuestion) {        
           // El mensaje de felicitaciones se mostrará en el blue-corner
         } else {
           handleRestartQuiz(); // Reiniciar si la respuesta es incorrecta

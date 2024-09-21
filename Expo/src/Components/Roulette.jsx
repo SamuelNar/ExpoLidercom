@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Wheel } from 'react-custom-roulette';
-import wheelSound from '/assets/WheelSpinf.mp3';
+import wheelSound from '/assets/Prueba2.mp3';
 import '../style/Roulette.css';
 
 const data = [
