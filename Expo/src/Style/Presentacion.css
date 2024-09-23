@@ -156,8 +156,9 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white;
+  background-color: rgba(7, 250, 238, 0.425);
   color: black;
+  font-weight: bold;
   padding: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
   transform: rotateY(180deg);

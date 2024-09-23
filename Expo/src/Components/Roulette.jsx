@@ -30,9 +30,11 @@ export default function Roulette() {
     audioRef.current = new Audio(wheelSound);
     audioRef2.current = new Audio(Felicidades);
     return () => {
-      if (audioRef.current) {
+      if (audioRef.current || audioRef2.current) {
         audioRef.current.pause();
+        audioRef2.current.pause();
         audioRef.current.currentTime = 0;
+        audioRef2.current.currentTime = 0;
       }
     };
   }, []);
