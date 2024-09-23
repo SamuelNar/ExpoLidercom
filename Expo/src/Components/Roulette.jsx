@@ -12,7 +12,7 @@ const data = [
   { option: 'Premio 5', style: { backgroundColor: '#9b59b6', textColor: '#fff' } },
   { option: 'Premio 6', style: { backgroundColor: 'purple', textColor: '#fff' } },
   { option: 'Premio 7', style: { backgroundColor: 'black', textColor: '#fff' } },
-  { option: 'Premio 8', style: { backgroundColor: 'orange', textColor: '#fff' } },
+  { option: 'Premio 8', style: { backgroundColor: 'blue', textColor: '#fff' } },
 ];
 
 export default function Roulette() {
