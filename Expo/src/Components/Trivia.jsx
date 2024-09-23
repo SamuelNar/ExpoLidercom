@@ -1,5 +1,5 @@
 import { useState, useEffect,useRef} from "react";
-import maniImagen from "/assets/personaje2.png";
+import autronauta from "/assets/personaje234.png";
 import imgCorner from "/assets/Formaazul.png";
 import Wrong from "/assets/Wrong.mp3";
 import Finish from "/assets/Finish.mp3";
@@ -9,15 +9,20 @@ import "../Style/Trivia.css";
 const Trivia = () => {
   const questions = [
     {
-      question: "¿Cuál es el principal país productor de maní en el mundo?",
-      choices: ["China", "Argentina", "Estados Unidos"],
-      correctAnswer: 0,
+      question: "¿Qué es un router?",
+      choices: ["Un dispositivo que amplifica el sonido", "Un dispositivo que distribuye la señal de internet", "Un tipo de impresora"],
+      correctAnswer: 1,
     },
     {
-      question: "¿Qué nutriente es especialmente abundante en el maní?",
-      choices: ["Proteína", "Carbohidratos", "Calcio"],
-      correctAnswer: 0,
+      question: "¿Qué función cumple un cable de fibra óptica?",
+      choices: ["Transmitir electricidad", "Transmitir datos a alta velocidad", "Reforzar la señal de televisión"],
+      correctAnswer: 1,
     },
+    {
+      question: "¿Qué es el phishing?",
+      choices: ["Un tipo de ataque cibernetico", "Un software que optimiza la seguridad informatica", "Un protocolo de transferencia segura"],
+      correctAnswer: 0,
+    }
   ];
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -38,7 +43,7 @@ const Trivia = () => {
         finishSound.play(); // Reproducir sonido al mostrar el mensaje de felicitaciones
         completionSoundPlayed.current = true; // Marcar que el sonido ya se reprodujo
       }
-      const feedbackDuration = 3000; // Duración del mensaje de felicitaciones
+      const feedbackDuration = 4000; // Duración del mensaje de felicitaciones
       const autoRestartTimer = setTimeout(() => {
         handleRestartQuiz();
       }, feedbackDuration); // Reiniciar después de que el mensaje haya durado
@@ -69,7 +74,7 @@ const Trivia = () => {
         ? isLastQuestion
           ? "¡Felicitaciones!"
           : "¡Correcto! Seguimos en carrera."
-        : "Upps, creo que va a tener que conocer más sobre nosotros";
+        : "Incorrecto. Intenta de nuevo.";
 
       setFeedback({ message: feedbackMessage });
 
@@ -150,7 +155,7 @@ const Trivia = () => {
             </div>
           </div>
         </div>
-        <img src={maniImagen} alt="Maní" className="mani-image" />
+        <img src={autronauta} alt="Maní" className="mani-image" />
       </div>
     </div>
   );

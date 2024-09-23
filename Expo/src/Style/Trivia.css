@@ -237,8 +237,8 @@
   
   .mani-image {
     position: absolute;
-    top: 80px;
-    right: -110px; 
+    top: 120px;
+    right: -190px; 
     max-width: 350px;
     height: auto;
     z-index: 20; 

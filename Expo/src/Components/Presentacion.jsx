@@ -80,6 +80,18 @@ const imageData = [
       src: "/ExpoLidercom/assets/Telecomunicaciones/telefonia.webp",
       info: "Telefonia IP",
       category: "Telecomunicaciones",
+    },
+    {
+      id: "img14",
+      src: "/ExpoLidercom/assets/Seguridad/semaforos.gif",
+      info: "Semaforos",
+      category: "Seguridad",
+    },
+    {
+      id: "img15",
+      src: "/ExpoLidercom/assets/Seguridad/barrera.gif",
+      info: "Barrera de seguridad",
+      category: "Seguridad",
     }
   ];
   
