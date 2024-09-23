@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Wheel } from 'react-custom-roulette';
 import wheelSound from '/assets/Prueba2.mp3';
+import Felicidades from '/assets/Felicidades.mp3';
 import '../style/Roulette.css';
 
 const data = [
@@ -23,9 +24,11 @@ export default function Roulette() {
   const isTouching = useRef(false);
   const spinTriggered = useRef(false);
   const audioRef = useRef(null);
+  const audioRef2 = useRef(null);
 
   useEffect(() => {
     audioRef.current = new Audio(wheelSound);
+    audioRef2.current = new Audio(Felicidades);
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
@@ -105,7 +108,10 @@ export default function Roulette() {
             onStopSpinning={() => {
               setMustSpin(false);
               setShowModal(true);
-              spinTriggered.current = false;              
+              spinTriggered.current = false;   
+              if (audioRef2.current) {
+                audioRef2.current.play();
+              }
             }}
             backgroundColors={['#3e3e3e', '#df3428']}
             textColors={['#ffffff']}
