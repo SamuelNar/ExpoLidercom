@@ -43,7 +43,7 @@ const Trivia = () => {
         finishSound.play(); // Reproducir sonido al mostrar el mensaje de felicitaciones
         completionSoundPlayed.current = true; // Marcar que el sonido ya se reprodujo
       }
-      const feedbackDuration = 4000; // Duración del mensaje de felicitaciones
+      const feedbackDuration = 3000; // Duración del mensaje de felicitaciones
       const autoRestartTimer = setTimeout(() => {
         handleRestartQuiz();
       }, feedbackDuration); // Reiniciar después de que el mensaje haya durado

@@ -186,16 +186,16 @@
     z-index: 10;
     overflow: hidden;
     opacity: 0;
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
   }
   
   .blue-corner.game-start {
-    animation: scaleBlueCorner 2s ease-in-out forwards;
+    animation: scaleBlueCorner 3s ease-in-out forwards;
     opacity: 1;
   }
   
   .blue-corner.feedback-visible {  
-    animation: scaleCorner 3s ease-in-out forwards;
+    animation: scaleCorner 4s ease-in-out forwards;
     opacity: 1;
   }
   

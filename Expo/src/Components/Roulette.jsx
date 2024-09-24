@@ -5,15 +5,26 @@ import Felicidades from '/assets/Felicidades.mp3';
 import '../style/Roulette.css';
 
 const data = [
-  { option: 'Premio 1', style: { backgroundColor: '#f39c12', textColor: '#fff' } },
-  { option: 'Premio 2', style: { backgroundColor: '#3498db', textColor: '#fff' } },
-  { option: 'Premio 3', style: { backgroundColor: '#2ecc71', textColor: '#fff' } },
-  { option: 'Premio 4', style: { backgroundColor: '#e74c3c', textColor: '#fff' } },
-  { option: 'Premio 5', style: { backgroundColor: '#9b59b6', textColor: '#fff' } },
-  { option: 'Premio 6', style: { backgroundColor: 'purple', textColor: '#fff' } },
-  { option: 'Premio 7', style: { backgroundColor: 'black', textColor: '#fff' } },
-  { option: 'Premio 8', style: { backgroundColor: 'blue', textColor: '#fff' } },
+  { option: 'Segui participando', style: { backgroundColor: '#f39c12', textColor: '#fff', className: 'small-text' } },
+  { option: 'Premio 1', style: { backgroundColor: '#3498db', textColor: '#fff'} },
+  { option: 'Game Over', style: { backgroundColor: '#2ecc71', textColor: '#fff' } },
+  { option: 'Segui participando', style: { backgroundColor: '#e74c3c', textColor: '#fff',className: 'small-text' } },
+  { option: 'Premio 2', style: { backgroundColor: '#9b59b6', textColor: '#fff' } },
+  { option: 'Game Over', style: { backgroundColor: 'purple', textColor: '#fff' } },
 ];
+
+const modifiedData = data.map((item) => {
+  if (item.option === 'Segui participando') {
+    return {
+      ...item,
+      style: { 
+        ...item.style, 
+        fontSize: 14,  // Ajusta el tamaño de la fuente     
+      },
+    };
+  }
+  return item;
+});
 
 export default function Roulette() {
   const [mustSpin, setMustSpin] = useState(false);
@@ -57,6 +68,19 @@ export default function Roulette() {
     }
   };
 
+  const handleStopSpinning = () => {
+    setMustSpin(false);
+    spinTriggered.current = false;
+
+    // Mostrar modal solo si es Premio 1 o Premio 2
+    if (prizeNumber === 1 || prizeNumber === 4) {
+      setShowModal(true);
+      if (audioRef2.current) {
+        audioRef2.current.play();
+      }
+    }
+  };
+
   const handleTouchStart = (e) => {
     if (!mustSpin) {
       isTouching.current = true;
@@ -77,7 +101,6 @@ export default function Roulette() {
       const currentAngle = Math.atan2(touch.clientY - centerY, touch.clientX - centerX);
       const rotation = ((currentAngle - startAngle.current) * 180 / Math.PI + 360) % 360;
 
-      // Aplicar la rotación solo al contenido interno de la rueda
       const wheelContent = wheelRef.current.querySelector('.roulette-pro');
       if (wheelContent) {
         wheelContent.style.transform = `rotate(${rotation}deg)`;
@@ -106,19 +129,12 @@ export default function Roulette() {
           <Wheel
             mustStartSpinning={mustSpin}
             prizeNumber={prizeNumber}
-            data={data}
-            onStopSpinning={() => {
-              setMustSpin(false);
-              setShowModal(true);
-              spinTriggered.current = false;   
-              if (audioRef2.current) {
-                audioRef2.current.play();
-              }
-            }}
+            data={modifiedData}
+            onStopSpinning={handleStopSpinning}
             backgroundColors={['#3e3e3e', '#df3428']}
             textColors={['#ffffff']}
             outerBorderWidth={5}
-            outerBorderColor="#000"
+            outerBorderColor="#000"      
             innerBorderWidth={5}
             innerRadius={30}
             radiusLineWidth={1}
