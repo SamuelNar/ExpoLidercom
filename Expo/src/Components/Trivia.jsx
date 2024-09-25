@@ -74,7 +74,7 @@ const Trivia = () => {
         ? isLastQuestion
           ? "¡Felicitaciones!"
           : "¡Correcto! Seguimos en carrera."
-        : "Incorrecto. Intenta de nuevo.";
+        : "Incorrecto";
 
       setFeedback({ message: feedbackMessage });
 

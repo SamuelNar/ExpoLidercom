@@ -3,20 +3,11 @@ import Draggable from "react-draggable";
 import "animate.css";
 import "../style/Presentacion.css";
 
-/*
-En el imageData tenes que cargar las cosas
-*/
 const imageData = [
     {
       id: "img1",
       src: "/ExpoLidercom/assets/Imagen/TotemLed.gif",
       info: "Totem LED",
-      category: "Imagen",
-    },
-    {
-      id: "img2",
-      src: "/ExpoLidercom/assets/WiFi.png",
-      info: "Información sobre imagen 2",
       category: "Imagen",
     },
     {
@@ -88,13 +79,13 @@ const imageData = [
     {
       id: "img14",
       src: "/ExpoLidercom/assets/Seguridad/semaforos.gif",
-      info: "Semaforos",
+      info: "Semaforos vehiculares, para municipios",
       category: "Seguridad",
     },
     {
       id: "img15",
       src: "/ExpoLidercom/assets/Seguridad/barrera.gif",
-      info: "Barrera de seguridad",
+      info: "Barreras vehiculares, excelentes empresas y edificios",
       category: "Seguridad",
     },
     {
@@ -109,41 +100,8 @@ const imageData = [
       info: "Alarma de evacuación",
       category: "Seguridad",
     },
-    /*
-      Se agrega de la siguiente forma 
-      {
-        id: "img18",   el id puede ser cualquiera pero lo ideal es que sea asi para seguir un orden
-        src: "/ExpoLidercom/assets/Imagen
-                                  Seguridad
-                                  Telecomunicaciones
-                                  /nombre de la imagen.gif",   este es el lugar donde se guardo la imagen 
-                                                               asegurate de la que imagenes esten guardadas 
-                                                               en algunas de las 3 carpetas Imagen Seguridad
-                                                               o Telecomunicaciones
-        info: 'Descripcion'                                                               
-        category: 'Seguridad o Imagen o Telecomunicaciones'    dependiendo en donde la guarde se cambia la 
-                                                               categoria
-        
-                                                               copia esto en verde y pega y anda modificando
-                                                               cuando te sale el texto en gris es el Copailot 
-                                                               dale tab y se autocompleta solo
-      },
-    */
+   
   ];
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
   const startScreen = [
     {
       id: "start1",
