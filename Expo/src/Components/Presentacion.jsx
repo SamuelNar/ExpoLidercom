@@ -4,104 +4,116 @@ import "animate.css";
 import "../style/Presentacion.css";
 
 const imageData = [
-    {
-      id: "img1",
-      src: "/ExpoLidercom/assets/Imagen/TotemLed.gif",
-      info: "Totem LED",
-      category: "Imagen",
-    },
-    {
-      id: "img3",
-      src: "/ExpoLidercom/assets/Seguridad/AlarmaSe.gif",
-      info: "Alarma",
-      category: "Seguridad",
-    },
-    {
-      id: "img4",
-      src: "/ExpoLidercom/assets/Seguridad/Unicon.jpg",
-      info: "Alarma domiciliaria",
-      category: "Seguridad",
-    },
-    {
-      id: "img5",
-      src: "/ExpoLidercom/assets/Seguridad/seguridad.webp",
-      info: "Seguridad informatica",
-      category: "Seguridad",
-    },
-    {
-      id: "img6",
-      src: "/ExpoLidercom/assets/Seguridad/alarmaEmergenica.webp",
-      info: "Alarmas de emergencias",
-      category: "Seguriridad",
-    },
-    {
-      id: "img7",
-      src: "/ExpoLidercom/assets/Seguridad/ControlAcceso.gif",
-      info: "Control de asistencia",
-      category: "Seguridad",
-    },
-    {
-      id: "img8",
-      src: "/ExpoLidercom/assets/Telecomunicaciones/FibraOptica.gif",
-      info: "Tendido de fibra optica",
-      category: "Telecomunicaciones",
-    },
-    {
-      id: "img9",
-      src: "/ExpoLidercom/assets/Telecomunicaciones/Startlink.jpg",
-      info: "Startlink",
-      category: "Telecomunicaciones",
-    },
-    {
-      id: "img10",
-      src: "/ExpoLidercom/assets/Imagen/internet.webp",
-      info: "Internet para eventos",
-      category: "Imagen",
-    },
-    {
-      id: "img11",
-      src: "/ExpoLidercom/assets/Telecomunicaciones/enlaces.webp",
-      info: "Enlaces",
-      category: "Telecomunicaciones",
-    },
-    {
-      id: "img12",
-      src: "/ExpoLidercom/assets/Telecomunicaciones/LAN.webp",
-      info: "Redes LAN",
-      category: "Telecomunicaciones",
-    },
-    {
-      id: "img13",
-      src: "/ExpoLidercom/assets/Telecomunicaciones/telefonia.webp",
-      info: "Telefonia IP",
-      category: "Telecomunicaciones",
-    },
-    {
-      id: "img14",
-      src: "/ExpoLidercom/assets/Seguridad/semaforos.gif",
-      info: "Semaforos vehiculares, para municipios",
-      category: "Seguridad",
-    },
-    {
-      id: "img15",
-      src: "/ExpoLidercom/assets/Seguridad/barrera.gif",
-      info: "Barreras vehiculares, excelentes empresas y edificios",
-      category: "Seguridad",
-    },
-    {
-      id: "img16",
-      src: "/ExpoLidercom/assets/Imagen/Streaming.gif",
-      info: "Streaming",
-      category: "Imagen",
-    },
-    {
-      id: "img17",
-      src: "/ExpoLidercom/assets/Seguridad/AlarmaEvacucion.gif",
-      info: "Alarma de evacuación",
-      category: "Seguridad",
-    },
-   
-  ];
+  {
+    id: "img1",
+    src: "/ExpoLidercom/assets/Imagen/TotemLed.gif",
+    info: "Tótem LED",
+    category: "Imagen",
+  },
+  {
+    id: "img2",
+    src: "/ExpoLidercom/assets/Imagen/desarrollo.gif",
+    info: "Desarrollo de software y páginas web",
+    category: "Imagen",
+  },
+  {
+    id: "img3",
+    src: "/ExpoLidercom/assets/Seguridad/AlarmaSe.gif",
+    info: "Alarma",
+    category: "Seguridad",
+  },
+  {
+    id: "img4",
+    src: "/ExpoLidercom/assets/Seguridad/Unicon.jpg",
+    info: "Alarma domiciliaria",
+    category: "Seguridad",
+  },
+  {
+    id: "img5",
+    src: "/ExpoLidercom/assets/Seguridad/Seguridad.gif",
+    info: "Seguridad informática",
+    category: "Seguridad",
+  },
+  {
+    id: "img6",
+    src: "/ExpoLidercom/assets/Seguridad/Domo.gif",
+    info: "Cámara de domo",
+    category: "Seguridad",
+  },
+  {
+    id: "img7",
+    src: "/ExpoLidercom/assets/Seguridad/ControlAcceso.gif",
+    info: "Control de asistencia",
+    category: "Seguridad",
+  },
+  {
+    id: "img8",
+    src: "/ExpoLidercom/assets/Telecomunicaciones/FibraOptica.gif",
+    info: "Tendido de fibra óptica",
+    category: "Telecomunicaciones",
+  },
+  {
+    id: "img9",
+    src: "/ExpoLidercom/assets/Telecomunicaciones/Startlink.gif",
+    info: "Starlink",
+    category: "Telecomunicaciones",
+  },
+  {
+    id: "img10",
+    src: "/ExpoLidercom/assets/Seguridad/Interior.gif",
+    info: "Cámaras para interior",
+    category: "Seguridad",
+  },
+  {
+    id: "img11",
+    src: "/ExpoLidercom/assets/Telecomunicaciones/enlaces.gif",
+    info: "Enlaces",
+    category: "Telecomunicaciones",
+  },
+  {
+    id: "img12",
+    src: "/ExpoLidercom/assets/Telecomunicaciones/LAN.gif",
+    info: "Redes LAN",
+    category: "Telecomunicaciones",
+  },
+  {
+    id: "img13",
+    src: "/ExpoLidercom/assets/Telecomunicaciones/telefonia.gif",
+    info: "Telefonía IP",
+    category: "Telecomunicaciones",
+  },
+  {
+    id: "img14",
+    src: "/ExpoLidercom/assets/Seguridad/semaforos.gif",
+    info: "Semáforos vehiculares, para municipios",
+    category: "Seguridad",
+  },
+  {
+    id: "img15",
+    src: "/ExpoLidercom/assets/Seguridad/barrera.gif",
+    info: "Barreras vehiculares, excelentes para empresas y edificios",
+    category: "Seguridad",
+  },
+  {
+    id: "img16",
+    src: "/ExpoLidercom/assets/Imagen/Streaming.gif",
+    info: "Streaming",
+    category: "Imagen",
+  },
+  {
+    id: "img17",
+    src: "/ExpoLidercom/assets/Seguridad/AlarmaEvacucion.gif",
+    info: "Alarma de evacuación",
+    category: "Seguridad",
+  },
+  {
+    id: "img18",
+    src: "/ExpoLidercom/assets/Imagen/Stand.gif",
+    info: "Diseño y construcción de stands para eventos",
+    category: "Imagen",
+  },
+];
+
   const startScreen = [
     {
       id: "start1",
